@@ -1,0 +1,96 @@
+setwd("...")
+
+require(MASS)
+require(ggplot2)
+require(reshape2)
+require(mlbench)
+require(plotly)
+require(pdist)
+require(gpr)
+
+data(BostonHousing2)
+data <- BostonHousing2
+
+# random subset as training and test data
+subset <- sample(1:506, 106, replace=F)
+train<- data[-(subset),]
+test <- data[subset,]
+
+x <- train[,c(4,5)]
+y <- train$medv
+x.star <-  test[,c(4,5)] 
+
+getGaussian <- function(X1, X2 = NULL ,l=1, sigma.f ) {
+  dist <- switch( is.null(X2) + 1, 
+                  as.matrix(pdist(X1, X2)),
+                  as.matrix(dist(X1)))
+  Sigma <- (sigma.f^2)*exp(-0.5*(dist^2/(l^2)))
+  return(Sigma)
+}
+getGaussian(X1 = x,sigma.f = 1)
+# input
+# vector of hyperparameters in the following order
+# noise
+# length
+# sigma.f
+likelihood <- function(hyper){
+  noise <-  (exp(hyper[1]))^0.5
+  length <- (exp(hyper[2]))^0.5 
+  sigma.f <-(exp(hyper[3]))^0.5
+  N <- nrow(x)
+  K <- getGaussian(X1 = x, l = length, sigma.f=sigma.f)
+  Ky <- K + diag( nrow=ncol(K))*(noise^2)
+  loglik <- 0.5*y%*%chol2inv(chol(Ky))%*%y - 0.5*det(Ky)-N*0.5*log(2*pi)
+  return(loglik)
+}
+
+grad <- function(hyper){
+  noise <- (exp(hyper[1]))^0.5 # define theta = log(noise ^2)
+  length <- (exp(hyper[2]))^0.5
+  sigma.f <- (exp(hyper[3]))^0.5
+  
+  K <- getGaussian(X1 = x, l = length, sigma.f=sigma.f)
+  Ky <- K + diag( nrow=ncol(K))*(noise^2) 
+  Kyi <- chol2inv(chol(Ky))
+  const <- Kyi%*%y%*%y%*%t(Kyi) - Kyi
+  
+  delta.noise <- 0.5 * tr(const*(diag( nrow=ncol(K))*noise)) 
+  delta.sigma.f <- 0.5 * tr(const*2*Ky/sigma.f)
+  dist <- as.matrix(dist(x))
+  # check this derivation...
+  delta.length <- 0.5 * tr(const*(Ky*(dist^2)/(length^3)))
+  
+  gradient <- c(delta.noise, delta.sigma.f, delta.length )
+  return(gradient)
+}
+hyper <- c(-3, 0.1, 1)
+
+likelihood(hyper)
+grad(hyper)
+hyper.opt <- optim( par =  c(-3, 0.1, 1), fn =  likelihood, gr = grad,
+       method = c("CG"))
+
+noise.opt <- exp(hyper.opt$par[1])^0.5
+length.opt <- exp(hyper.opt$par[1])^0.5 
+sigma.f.opt <- exp(hyper.opt$par[1])^0.5
+
+noise <- noise.opt
+K <- getGaussian(X1 = x, l = length.opt, sigma.f=sigma.f.opt)
+Ky <- K + diag( nrow=ncol(K))*(noise.opt^2) 
+K.star <- getGaussian(x, x.star, l = length.opt, sigma.f=sigma.f.opt)
+K.star.star <- getGaussian(X1 = x.star, l = length.opt, sigma.f=sigma.f.opt) 
+postCov <- K.star.star - t(K.star)%*%chol2inv(chol((Ky)))%*%K.star
+#  400x400     - 400x106    106x106        106x400
+
+
+mu.star <- t(K.star)%*%chol2inv(chol((Ky)))%*%y
+predictions <- cbind(x.star, y = mu.star, pred = 1)
+training <- cbind(x, pred = 0)
+results <- rbind(cbind(training, y), predictions)
+
+pred.gp <- ggplot(data = NULL, aes(x = test$medv, y = predictions$y)) + geom_point() +
+  scale_x_continuous(name = "True Values") +
+  scale_y_continuous(name = "GP Predictions") +
+  + ggtitle("Prediction of House Prices based on Longitude and Latitude")
+pred.gp
+ggsave("prediction.pdf", plot = pred.gp ) # save
