@@ -2,7 +2,7 @@
 Some Implementation of Gaussian Processes with simulated and real data (Boston Housing Data)
 
 # HparamInLikelihood
-Replicates Figure 5.3a and Figure 5.3b from Rasmussen & Williams (2012) in R.
+Replicates Figure 5.3a and Figure 5.3b from Rasmussen & Williams (2006) in R.
 ![Figure53a](Rasmussen53a.jpg)
 ![Figure53b](Rasmussen53b.jpg)
 
