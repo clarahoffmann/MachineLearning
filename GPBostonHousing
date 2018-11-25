@@ -13,7 +13,7 @@
 # 4. Evaluating Predictions
 
 # set working directory
-setwd("/Users/claracharlottehoffmann/Desktop/MachineLearning")
+setwd("...")
 
 ##################################################
 
