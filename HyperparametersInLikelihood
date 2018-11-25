@@ -1,42 +1,95 @@
-require("MASS")
-require("ggplot2")
-require(lattice)
-require(scales)
+#################################################
+
+#  Influence of the kernel parameters in a 
+#  Gaussian Process on the marginal log-
+#  likelihood and its respective elements:
+#  Replicates Figure 5.3a and Figure 5.3b in
+#  Rasmussen & Williams (2006)
+#################################################
+
+# Structure:
+# 0. Load Packages 
+# 1. Data & Functions
+# 2. Kernel Parameter Optimization
+# 3. Figure 5.3a
+# 4. Figure 5.3b
+
+# set working directory
 setwd("...")
 
-#gausskernel(X=x,sigma=1)
-# noisy with different hyperparameters, fit to 20 obs
-# without cholesky decomposition
+##################################################
 
-# Calculates a Gaussian Kernel
-#
-# Parameters:
-#    two vectors X1,X2 
-#    l = bandwidth ^1/2
-#    sigma.f = scaling parameter
-# Returns:
-# 	a covariance matrix
-getGaussian <- function(X1, X2 ,l=1, sigma.f = 1 ) {
-  Zero <- matrix( rep( 0, len=length(X1)*length(X2)), nrow = length(X1))
-  A <- Zero + X1
-  B <- t(t(Zero)+X2)
-  Sigma <- (sigma.f^2)*exp(-((A-B)^2)/(2*(l^2)))
-  return(Sigma)
-}
+# 0.  Load Packages and Data
+##################################################
 
+# load packages
+if (!require("pacman")) 
+  install.packages("pacman"); library("pacman") 
+p_load("MASS", 
+       "ggplot2", 
+       "scales")
 
-# Figure 5.3.a Rasmussen & Williams 2006
+##################################################
 
+# 1.  Data & Functions
+##################################################
+
+# generate sample data from a sine function
+# with normally distributed noise
 x <- sample(-400:400, 7, replace=F)/100
 noise <- (0.1)^2
 y = sin(x) + mvrnorm(1, 0 , noise) 
-# margLikelihood
+
+getGaussian <- function(X1, X2 = NULL ,l=1, 
+                        sigma.f=1 ) {
+  # Computes gaussian kernel for matrices/vectors
+  # Allows calibration of all kernel parameters
+  # Option for two or one matrices/vectors
+  #
+  # Args:
+  #   X1:      first/only matrix or vector
+  #   X2:      second matrix or vector
+  #   l:       scaling parameter in exponent
+  #   sigma.f: scaling parameter in base
+  #
+  # Returns:
+  #   gaussian kernel matrix
+  #
+  # calculate distance between all elements
+  dist <- switch( is.null(X2) + 1, 
+                  as.matrix(pdist(X1, X2)),
+                  as.matrix(dist(X1)))
+  #compute kernel
+  Sigma <- (sigma.f^2)*exp(-0.5*(dist^2/(l^2)))
+  return(Sigma)
+}
 
 likelihood <- function(length, noise=0.1){
-  Ky <- getGaussian(x, x, l=length) + diag(nrow=length(x))*(noise^2)
-  #Ky <-gausskernel(X = x, s=(length^2)) + diag(nrow=length(x))*(noise^2)
+  # Computes marg. log-likelihood for a joint 
+  # normal distribution of a Gaussian Process
+  # and its nonconstant elements
+  # Note: requires function getGaussian() 
+  #
+  # Args:
+  #   X:      matrix or vector of observed 
+  #           x-values from training set
+  #   length: length parameter for Gaussian
+  #            kernel
+  #   noise: noise parameter for Gaussian
+  #          kernel - default = 0.1
+  #
+  # Returns:
+  #  vector of length, marg. log-
+  #  likelihood, datafit term, 
+  #  complexity term
+  #  
+  #
+  Ky <- getGaussian(x, l=length) + 
+    diag(nrow=length(x))*(noise^2)
   Kyi <- chol2inv(chol(Ky))
-  prob <- -0.5*y%*%Kyi%*%y - 0.5*log(det(Ky)) - 0.5*length(x)*log(2*pi)
+  prob <- -0.5*y%*%Kyi%*%y - 
+    0.5*log(det(Ky)) - 
+    0.5*length(x)*log(2*pi)
   datafit <- -0.5*y%*%Kyi%*%y
   complex <- - 0.5*log(det(Ky))
   return(rbind(length, prob, datafit, complex))
@@ -44,20 +97,42 @@ likelihood <- function(length, noise=0.1){
 
 sy <- seq(0.5,10, 0.05)
 mydata <- as.data.frame(t(sapply(sy, likelihood)))
-colnames(mydata)<- c("length", "prob", "datafit", "complex")
+colnames(mydata)<- c("length", "prob", 
+                     "datafit", "complex")
 Fig53a <- ggplot() + 
-  geom_line(data = NULL, aes(x=mydata$length,y=mydata$prob,colour="darkblue") ) + 
-  geom_line(data = NULL, aes(x=mydata$length,y=mydata$datafit,colour="red"), linetype ="dashed" ) + 
-  geom_line(data = NULL, aes(x=mydata$length,y=mydata$complex,colour="green"), linetype="dotted" ) +
-  scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
-                labels = trans_format("log10", math_format(10^.x)))  +
+  geom_line(data = NULL,  
+            aes(x = mydata$length,
+                y = mydata$prob,
+                colour = "darkblue")) + 
+  geom_line(data = NULL, 
+            aes(x = mydata$length,
+                y = mydata$datafit,
+                colour = "red"), 
+            linetype = "dashed" ) + 
+  geom_line(data = NULL, 
+            aes(x = mydata$length,
+                y = mydata$complex,
+                colour = "green"), 
+            linetype = "dotted" ) +
+
+    scale_x_log10(breaks = trans_breaks(
+      "log10", function(x) 10^x),
+      labels = trans_format("log10", 
+                            math_format(10^.x))) +
   annotation_logticks(sides="b") + 
-  scale_y_continuous(name = "log probability", limits = c(-100,70)) +
-  scale_color_discrete(name = "sample size",labels = c("minus complexity penalty",
-                                                       "n = data fit", "n = marginal likelihood")) +
+  scale_y_continuous(name = "log probability", 
+                     limits = c(-100,70)) +
+  scale_color_discrete(name = "sample size",
+                       labels = 
+                         c("minus 
+                           complexity penalty",
+                           "n = data fit", 
+                           "n = marginal 
+                           likelihood")
+                       ) +
   theme(legend.position = c(0.3, 0.3))
 Fig53a
-ggsave("Rasmussen53a.pdf", plot = Fig53a ) # save
+ggsave("Rasmussen53a.jpg", plot = Fig53a ) # save
 
 
 # for different sample sizes figure 5.3.b Rasmussen & Williams 2006
@@ -70,42 +145,74 @@ y.med <- sin(x.med) + mvrnorm(1, 0 , noise)
 x.large <- sample(-400:400, 55, replace=F)/100
 y.large <- sin(x.large) + mvrnorm(1, 0 , noise)
 
+# length parameters for which we want to compute 
+# the log probability
 sy <- seq(0.05,10, 0.05)
 
+# Computes gaussian kernel for matrices/vectors
+# FILL UP LATER :::::
+#::::::::::::::::..............
+# ::::::::::::::::::::::::::
+
+# ALSO THIS SHOULD BE DONE NICER WITH INPUT ELEMENTS X AND Y
+# BUT THEN SOME PROBLEMS WITH THE SAPPLY FUNCTION OCCUR...
+# calculate distance between all elements
 prob <- function(length, noise=0.1){
-  Ky <- getGaussian(x, x, l=length) + diag(nrow=length(x))*(noise^2)
+  Ky <- getGaussian(x, l=length) + 
+    diag(nrow=length(x))*(noise^2)
   Kyi <- chol2inv(chol(Ky))
-  prob <- -0.5*y%*%Kyi%*%y - 0.5*log(det(Ky)) - 0.5*length(x)*log(2*pi)
+  prob <- -0.5*y%*%Kyi%*%y - 
+    0.5*log(det(Ky)) - 
+    0.5*length(x)*log(2*pi)
   datafit <- -0.5*y%*%Kyi%*%y
   complex <- - 0.5*log(det(Ky))
   const <- - 0.5*length(x)*log(2*pi)
   return(prob)
 }
 
+# compute log-proability for different sample sizes
 x <- x.small
 y <- y.small
 mydata.small <- as.data.frame(t(sapply(sy, prob)))
-
 x <- x.med
 y <- y.med
 mydata.med <- as.data.frame(t(sapply(sy, prob)))
-
 x <- x.large
 y <- y.large
 mydata.large <- as.data.frame(t(sapply(sy, prob)))
 
-samp.size <- as.data.frame(t(rbind(x = sy, s =mydata.small, m=mydata.med, l=mydata.large)))
+samp.size <- as.data.frame(t(rbind(
+  x = sy, s =mydata.small, 
+  m=mydata.med, l=mydata.large)))
 
 Fig53b <- ggplot() + 
-  geom_line(data = NULL, aes(x=samp.size$x,y=samp.size$s,colour="darkblue"), linetype="dotted" ) + 
-  geom_line(data = NULL, aes(x=samp.size$x,y=samp.size$m,colour="red"), linetype = "dashed" ) + 
-  geom_line(data = NULL, aes(x=samp.size$x,y=samp.size$l,colour="green") ) +
-  scale_x_log10(name = "characteristic lengthscale", 
-                breaks = trans_breaks("log10", function(x) 10^x),
-                labels = trans_format("log10", math_format(10^.x))) +
+  geom_line(data = NULL, 
+            aes(x = samp.size$x,
+                y = samp.size$s,
+                colour = "darkblue"), 
+            linetype="dotted" ) + 
+  geom_line(data = NULL, 
+            aes(x = samp.size$x,
+                y = samp.size$m,
+                colour = "red"), 
+            linetype = "dashed" ) + 
+  geom_line(data = NULL, 
+            aes(x = samp.size$x,
+                y = samp.size$l,
+                colour = "green") ) +
+  scale_x_log10(name = "characteristic 
+                lengthscale", 
+                breaks = trans_breaks(
+                  "log10", function(x) 10^x),
+                labels = trans_format(
+                  "log10", math_format(10^.x))) +
   annotation_logticks(sides="b") + 
-  scale_y_continuous(name = "log probability", limits = c(-100,70)) +
-  scale_color_discrete(name = "sample size",labels = c("n = 8", "n = 21", "n = 55")) +
+  scale_y_continuous(name = "log probability", 
+                     limits = c(-100,70)) +
+  scale_color_discrete(name = "sample size",
+                       labels = c("n = 8", 
+                                  "n = 21", 
+                                  "n = 55")) +
   theme(legend.position = c(0.3, 0.3))
 Fig53b
-ggsave("Rasmussen53b.pdf", plot = Fig53b ) # save
+ggsave("Rasmussen53b.jpg", plot = Fig53b ) # save
