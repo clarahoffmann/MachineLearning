@@ -3,7 +3,7 @@ Some Implementation of Gaussian Processes with simulated and real data (Boston H
 
 # HparamInLikelihood
 Replicates Figure 5.3a and Figure 5.3b from Rasmussen & Williams (2006) in R.
-<img src="https://github.com/clarahoffmann/MachineLearning/blob/master/Rasmussen53a.jpg" height="500" width="1000">
+<img src="https://github.com/clarahoffmann/MachineLearning/blob/master/Rasmussen53a.jpg" height="700" width="1000">
 <img src="https://github.com/clarahoffmann/MachineLearning/blob/master/Rasmussen53b.jpg" height="48" width="96">
 
 
