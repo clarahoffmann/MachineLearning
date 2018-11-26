@@ -13,17 +13,16 @@
 # 4. Evaluating Predictions
 
 # set working directory
-setwd("...")
+setwd("/Users/claracharlottehoffmann/Desktop/MachineLearning")
 
 ##################################################
 
 # 0.  Load Packages and Data
 ##################################################
 
+# load packages
 if (!require("pacman")) 
   install.packages("pacman"); library("pacman") 
-
-# Packages to load
 p_load("MASS", 
        "ggplot2", 
        "reshape2",
@@ -49,16 +48,17 @@ train<- data[-(subset),]
 test <- data[subset,]
 
 # define x and f(x) = y
+# from training set
 x <- train[,c(4,5)] #,7,9,11,12,13,14,15,17,18,19,20,21
 y <- train$medv
 # define x values at which to predict
+# from test set
 x.star <-  test[,c(4,5)] #,7,9,11,12,13,14,15,17,18,19,20,21
 
 ##################################################
 
 # 2. Kernel Parameter Optimization
 ##################################################
-
 
 getGaussian <- function(X1, X2 = NULL ,l=1, sigma.f ) {
   # Computes gaussian kernel for matrices/vectors
@@ -85,7 +85,6 @@ getGaussian <- function(X1, X2 = NULL ,l=1, sigma.f ) {
 
 getGaussian(X1 = x, l = 5, sigma.f = -10) # just for testing function
 
-
 likelihood <- function(hyper, X = x, Y = y){
   # Computes marg. log-likelihood for a joint 
   # normal distribution of a Gaussian Process
@@ -109,7 +108,6 @@ likelihood <- function(hyper, X = x, Y = y){
   #   loglik : marginal log-likelihood 
   #            as scalar
   #
-  # calculate distance between all elements
   noise <-  (exp(hyper[1]))^0.5
   length <- (exp(hyper[2]))^0.5 
   sigma.f <-(exp(hyper[3]))^0.5
@@ -117,7 +115,7 @@ likelihood <- function(hyper, X = x, Y = y){
   K <- getGaussian(X1 = X, l = length, sigma.f=sigma.f)
   Ky <- K + diag( nrow=ncol(K))*(noise^2)
   Kyi <- chol2inv(chol(Ky))
-  loglik <- 0.5*Y%*%Kyi%*%Y - 0.5*det(Ky)-N*0.5*log(2*pi)
+  loglik <- 0.5*Y%*%Kyi%*%Y - 0.5*log(det(Ky))-N*0.5*log(2*pi)
   return(loglik)
 }
 
@@ -170,12 +168,12 @@ grad <- function(hyper, X = x, Y = y){
   return(gradient)
 }
 #test function -> delete later
-hyper <- c(-3,5, -10)
+hyper <- c(0.01,-0.05, 1)
 likelihood(hyper)
 grad(hyper)
 
 # optimize gradient parameters with optimize function
-hyper.opt <- optim( par =  c(-3,0.1, 1), 
+hyper.opt <- optim( par =  c(0.01,-0.05, 1), 
                     fn =  likelihood, gr = grad,
        method = c("CG")) # "CG"
 # step size is a problem... takes extremely small values for length parameter...
@@ -231,5 +229,3 @@ pred.gp <- ggplot(data = NULL,
           based on Longitude and Latitude")
 pred.gp  # show plot
 ggsave("prediction.jpg", plot = pred.gp )  # save
-
-
