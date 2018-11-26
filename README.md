@@ -3,8 +3,8 @@ Some Implementation of Gaussian Processes with simulated and real data (Boston H
 
 # HparamInLikelihood
 Replicates Figure 5.3a and Figure 5.3b from Rasmussen & Williams (2006) in R.
-<img src="https://github.com/clarahoffmann/MachineLearning/blob/master/Rasmussen53a.jpg" height="430" width="500">
-<img src="https://github.com/clarahoffmann/MachineLearning/blob/master/Rasmussen53b.jpg" height="430" width="500">
+<img src="https://github.com/clarahoffmann/MachineLearning/blob/master/Rasmussen53a.jpg" height="500" width="500">
+<img src="https://github.com/clarahoffmann/MachineLearning/blob/master/Rasmussen53b.jpg" height="500" width="500">
 
 
 # InfluenceOfHyperparameters
