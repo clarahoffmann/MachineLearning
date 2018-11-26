@@ -3,8 +3,9 @@ Some Implementation of Gaussian Processes with simulated and real data (Boston H
 
 # HparamInLikelihood
 Replicates Figure 5.3a and Figure 5.3b from Rasmussen & Williams (2006) in R.
-![Figure53a](Rasmussen53a.jpg)
-![Figure53b](Rasmussen53b.jpg)
+<img src="https://github.com/clarahoffmann/MachineLearning/blob/master/Rasmussen53a.jpg" height="48" width="96">
+<img src="https://github.com/clarahoffmann/MachineLearning/blob/master/Rasmussen53b.jpg" height="48" width="96">
+
 
 # InfluenceOfHyperparameters
 Illustrating the effect of different choices of hyperparameters in a Gaussian Process with an SE Kernel. The figure is an extension of figure 15.3 in KPM (2012) and implemented in R based on the Matlab Code gprDemoChangeHparams written by Carl Rasmussen.
