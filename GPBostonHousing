@@ -31,7 +31,8 @@ p_load("MASS",
        "pdist",
        "gpr",
        "psych",
-       "pbdDMAT")
+       #"pbdDMAT",
+       "Rcgmin")
 
 #  read in data
 data(BostonHousing2)
@@ -155,33 +156,32 @@ grad <- function(hyper, X = x, Y = y){
   Kyi <- chol2inv(chol(Ky))
   const <- Kyi%*%Y%*%Y%*%t(Kyi) - Kyi
   # compute gradient elements
-  delta.noise <- 0.5 * tr(const*(diag( 
-    nrow=ncol(K))*noise)) 
+  delta.noise <- 0.5 * tr(const*(diag(nrow=ncol(K))*noise)) 
   delta.sigma.f <- 0.5 * tr(const*2*Ky/sigma.f)
   dist <- as.matrix(dist(X))
   # check this derivation...
-  delta.length <- 0.5 * tr(const*(
-    Ky*(dist^2)/(length^2)))
-  gradient <- c(delta.noise, 
-                delta.sigma.f, 
-                delta.length )
+  delta.length <- 0.5 * tr(const*(K%*%(dist^2)*((2*length^4)^(-1))))
+  gradient <- c(delta.noise,
+                delta.length,
+                delta.sigma.f)
   return(gradient)
 }
 #test function -> delete later
-hyper <- c(0.01,-0.05, 1)
+hyper <- c(1,0.7, 1.3)
 likelihood(hyper)
 grad(hyper)
+#-1,-0.0001, 1
 
 # optimize gradient parameters with optimize function
-hyper.opt <- optim( par =  c(0.01,-0.05, 1), 
+hyper.opt <- optim( par =  c(1,0.7, 1.3), 
                     fn =  likelihood, gr = grad,
-       method = c("CG")) # "CG"
+       method = c("CG")) 
 # step size is a problem... takes extremely small values for length parameter...
 # solution: optimize l^2 for each input parameter?
 
 noise.opt <- exp(hyper.opt$par[1])^0.5
-length.opt <- exp(hyper.opt$par[1])^0.5 
-sigma.f.opt <- exp(hyper.opt$par[1])^0.5
+length.opt <- exp(hyper.opt$par[2])^0.5 
+sigma.f.opt <- exp(hyper.opt$par[3])^0.5
 
 
 ##################################################
@@ -229,3 +229,4 @@ pred.gp <- ggplot(data = NULL,
           based on Longitude and Latitude")
 pred.gp  # show plot
 ggsave("prediction.jpg", plot = pred.gp )  # save
+
