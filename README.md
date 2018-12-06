@@ -14,6 +14,6 @@ Illustrating the effect of different choices of hyperparameters in a Gaussian Pr
 <img src="noisyhyper.jpg" width="600">
 
 # Some different kernel functions
-Some different kernels in R.
+Some sampled functions of different kernels when conditioning on five points of a noisy sine function.
 \
 <img src="gp_kernels.jpg" width="600">
