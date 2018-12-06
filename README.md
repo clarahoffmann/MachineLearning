@@ -16,4 +16,4 @@ Illustrating the effect of different choices of hyperparameters in a Gaussian Pr
 # Some different kernel functions
 Some different kernels in R.
 \
-<img src="gpkernels.jpg" width="600">
+<img src="gp_kernels.jpg" width="600">
