@@ -99,12 +99,12 @@ The resulting plots clearly shows how the optimization process reduces the width
 
 The results for the noiseless case look like this:
 
-<img src="gpnoerror.jpg" align = "center" width="250"> <img src="gpnoerror_opt.jpg" width="250">
+<img src="gpnoerror.jpg" width="250"> <img src="gpnoerror_opt.jpg" width="250">
 
 In the noisy case, the Gaussian process does not have to interpolate the observed data points.
 The results look like this:
 
-<img src="gperror.jpg" align = "center" width="250"><img src="gperror_opt.jpg" width="250">
+<img src="gperror.jpg" width="250"><img src="gperror_opt.jpg" width="250">
 
 # Acknowledgements and Sources
 
