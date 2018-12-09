@@ -103,7 +103,7 @@ gauss.error <- ggplot() +
         panel.grid.minor = element_blank()) +
   theme(legend.position="none")
 gauss.error
-ggsave("gperror.pdf", plot = gauss.error ) # save
+ggsave("gperror.jpg", plot = gauss.error ) # save
 
 ##################################################
 
@@ -189,5 +189,5 @@ gauss.error <- ggplot() +
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank())
 gauss.error
-ggsave("gperror_opt.pdf", plot = gauss.error ) # save
+ggsave("gperror_opt.jpg", plot = gauss.error ) # save
 
