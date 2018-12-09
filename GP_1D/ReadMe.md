@@ -5,6 +5,19 @@
 This code illustrates a one-dimensional Gaussian process regression with and without a conjugate-gradient optimizer.
 The two code files generate a graphical illustration of the case with noiseless and noisy observations.
 
+
+# Getting started
+Install the relevant packages.
+
+```r
+# load packages
+if (!require("pacman")) 
+  install.packages("pacman"); library("pacman") 
+p_load("MASS", 
+       "ggplot2", 
+       "reshape2")
+```
+# Simulate observed data
 Simulated data from a sine function is used as a observed data:
 ```r
 # generate observed x and y = f(x) values
@@ -14,7 +27,7 @@ y = sin(x) + mvrnorm(1, 0 , noise)
 # generate x values at which we need predictions
 x.star <- seq(-5,5,len=100) 
 ```
-
+# Compute Gaussian Kernel
 First, a Gaussian kernel function generates the covariance matrix of the Gaussian process.
 ```r
 getGaussian <- function(X1, X2 ,l=1, sigma.f = 1 ) {
@@ -26,6 +39,7 @@ getGaussian <- function(X1, X2 ,l=1, sigma.f = 1 ) {
   return(Sigma)
 }
 ```
+# Compute Covariance of Gaussian process and Posterior Distribution
 The respective elements of the covariance matrix are computed. The noise term $\sigma_y^2 = noise" is only added in the case of noisy observations.
 ```r
 # kernel elements
@@ -46,6 +60,7 @@ mu.star <- t(K.star)%*%solve(Ky)%*%y
 sample <- replicate(5, mvrnorm(1, mu.star , postCov))%>%
   as.data.frame()
 ```
+# Gradient-Based Optimization
 In the case of an optimization, the hyperparameters in the Gaussian kernel as well as the noise parameter have to be optimized for by some gradient-based optimizer. I use a conjugate gradient optimizer.
 
 First, the negative log-likelihood function is defined. It contains restrictions on the parameters, such that all of them cannot take on negative values. The input values of the optimizer function are the logs of the squared hyperparameters.
@@ -79,6 +94,7 @@ length.opt <- exp(hyper.opt$par[2])^0.5
 sigma.f.opt <- exp(hyper.opt$par[3])^0.5
 ```
 
+# Results
 The resulting plots clearly shows how the optimization process reduces the width of the confidence bands. This is intuitive as the optimization converges when the parametrization with the highest log-likelihood near the starting point is found.
 
 The results for the noiseless case look like this:
@@ -90,4 +106,8 @@ The results look like this:
 <img src="gperror.jpg" align = "center" width="600">
 <img src="gperror_opt.jpg" width="600">
 
+# Acknowledgements and Sources
 
+- The article by James Keirstead (2012) is a great starting point for GP regression in R: https://www.r-bloggers.com/gaussian-process-regression-with-r/
+- Rasmussen \& William's "Gaussian Processes in Machine Learning" (2006) give a structured and extensive overview of Gaussian Processes
+- Kevin P. Murphy provides code to examples from his book "Machine Learning - A Probabilistic Perspective" (2012) on his github page. The noisefree Gaussian process with simulated data can be found here: https://github.com/probml/pmtk3/blob/master/demos/gprDemoNoiseFree.m
