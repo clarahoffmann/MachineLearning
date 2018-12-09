@@ -101,7 +101,7 @@ gauss.no.error <- ggplot() +
         panel.grid.minor = element_blank()) +
   theme(legend.position="none")
 gauss.no.error
-ggsave("gpnoerror.pdf", plot = gauss.no.error ) # save
+ggsave("gpnoerror.jpg", plot = gauss.no.error ) # save
 
 ##################################################
 
@@ -187,4 +187,4 @@ gauss.no.error.opt <- ggplot() +
         panel.grid.minor = element_blank()) +
   theme(legend.position="none")
 gauss.no.error.opt
-ggsave("gpnoerror_opt.pdf", plot = gauss.no.error.opt ) # save
+ggsave("gpnoerror_opt.jpg", plot = gauss.no.error.opt ) # save
