@@ -98,10 +98,12 @@ sigma.f.opt <- exp(hyper.opt$par[3])^0.5
 The resulting plots clearly shows how the optimization process reduces the width of the confidence bands. This is intuitive as the optimization converges when the parametrization with the highest log-likelihood near the starting point is found.
 
 The results for the noiseless case look like this:
+
 <img src="gpnoerror.jpg" align = "center" width="250"> <img src="gpnoerror_opt.jpg" width="250">
 
 In the noisy case, the Gaussian process does not have to interpolate the observed data points.
 The results look like this:
+
 <img src="gperror.jpg" align = "center" width="250"><img src="gperror_opt.jpg" width="250">
 
 # Acknowledgements and Sources
