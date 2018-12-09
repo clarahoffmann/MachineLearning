@@ -108,8 +108,10 @@ The results look like this:
 
 # Acknowledgements and Sources
 
-- The article by James Keirstead (2012) is a great starting point for GP regression in R: \ https://www.r-bloggers.com/gaussian-process-regression-with-r/
+- The article by James Keirstead (2012) is a great starting point for GP regression in R: 
+https://www.r-bloggers.com/gaussian-process-regression-with-r/
 
 - Rasmussen \& William's "Gaussian Processes in Machine Learning" (2006) give a structured and extensive overview of Gaussian Processes
 
-- Kevin P. Murphy provides code to examples from his book "Machine Learning - A Probabilistic Perspective" (2012) on his github page. The noisefree Gaussian process with simulated data can be found here: \ https://github.com/probml/pmtk3/blob/master/demos/gprDemoNoiseFree.m
+- Kevin P. Murphy provides code to examples from his book "Machine Learning - A Probabilistic Perspective" (2012) on his github page. The noisefree Gaussian process with simulated data can be found here: 
+https://github.com/probml/pmtk3/blob/master/demos/gprDemoNoiseFree.m
