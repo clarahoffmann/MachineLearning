@@ -16,9 +16,11 @@
 # 0.  Load Packages and Generate Data
 ##################################################
 
-require(MASS)
-require(ggplot2)
-require(gridExtra)
+if (!require("pacman")) 
+  install.packages("pacman"); library("pacman") 
+p_load("MASS", 
+       "ggplot2", 
+       "gridExtra")
 setwd("/Users/claracharlottehoffmann/Desktop/MachineLearning")
 
 # observed values
