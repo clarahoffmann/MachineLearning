@@ -1,9 +1,8 @@
 #################################################
 
-#  Gaussian Process on Noisy Observations with
+#  Gaussian Process on Boston Housing Prices with
 #  Conjugate Gradient Optimization on the Kernel
-#  Parameters 
-#  - Based on Rasmussen & Williams (2006)
+#  Parameters
 #################################################
 
 # Structure:
@@ -57,8 +56,10 @@ x.star <- seq(-5,5,len=100)
 # Returns:
 #   Gaussian kernel matrix
 #
-getGaussian <- function(X1, X2 ,l=1, sigma.f = 1 ) {
-  Zero <- matrix( rep( 0, len=length(X1)*length(X2)), 
+getGaussian <- function(X1, X2 ,
+                        l=1, sigma.f = 1 ) {
+  Zero <- matrix( rep(0, 
+                      len=length(X1)*length(X2)), 
                   nrow = length(X1))
   A <- Zero + X1
   B <- t(t(Zero)+X2)
@@ -73,15 +74,20 @@ getGaussian <- function(X1, X2 ,l=1, sigma.f = 1 ) {
 
 # 2.1 Covariance and Posterior
 # kernel elements
-Ky <- getGaussian(x, x) + diag( nrow=length(x))*noise
+Ky <- getGaussian(x, x) + 
+  diag(nrow = length(x))*noise
 K.star <- getGaussian(x, x.star) 
 K.star.star <- getGaussian(x.star, x.star)
 # posterior covariance and mean
-postCov <- K.star.star - t(K.star)%*%solve(Ky)%*%K.star
+postCov <- K.star.star - 
+  t(K.star)%*%solve(Ky)%*%K.star
 mu.star <- t(K.star)%*%solve(Ky)%*%y
 
 # sample some functions from posterior
-sample <- replicate(5, mvrnorm(1, mu.star , postCov))%>%
+sample <- replicate(5, 
+                    mvrnorm(1, 
+                            mu.star, 
+                            postCov))%>%
   as.data.frame()
 values <- cbind(x=x.star,sample)
 values <- melt(values,id="x")
@@ -93,15 +99,20 @@ upperbound <- mu.star -2*sqrt(S2)
 
 # 2.2 Plot Results
 gauss.error <- ggplot() + 
-  geom_ribbon(x = x.star, aes(ymin= lowerbound, 
-                              ymax = upperbound), fill = "grey70") +
+  geom_ribbon(x = x.star, 
+              aes(ymin= lowerbound, 
+                  ymax = upperbound), 
+              fill = "grey70") +
   geom_point( data = NULL,aes( x = x, y=y)) +
-  geom_line(data = values, aes(x=x,y=value, 
-                               group=variable, colour = variable)) +
+  geom_line(data = values, 
+            aes(x = x, y = value, 
+                group = variable, 
+                colour = variable)) +
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) +
-  theme(legend.position="none")
+  theme(legend.position="none") +
+  ylim(-2.5, 2.5)
 gauss.error
 ggsave("gperror.jpg", plot = gauss.error ) # save
 
@@ -138,10 +149,13 @@ likelihood <- function(hyper, X = x, Y = y){
   length <- (exp(hyper[2]))^0.5 
   sigma.f <-(exp(hyper[3]))^0.5
   N <- length(X)
-  K <- getGaussian(X,X, l = length, sigma.f=sigma.f)
+  K <- getGaussian(X, X, 
+                   l = length, sigma.f=sigma.f)
   Ky <- K + diag( nrow=ncol(K))*(noise^2)
   Kyi <- chol2inv(chol(Ky))
-  loglik <- 0.5*t(Y)%*%Kyi%*%Y+ 0.5*log(det(Ky)) + N*0.5*log(2*pi)
+  loglik <- 0.5*t(Y)%*%Kyi%*%Y + 
+    0.5*log(det(Ky)) + 
+    N*0.5*log(2*pi)
   return(loglik)
 }
 
@@ -156,19 +170,26 @@ hyper.opt
 noise.opt <- exp(hyper.opt$par[1])^0.5
 length.opt <- exp(hyper.opt$par[2])^0.5 
 sigma.f.opt <- exp(hyper.opt$par[3])^0.5
-
+#################################################
 # compute covariance matrix and posterior means
 K.star <- getGaussian(x, x.star,
-                      l=length.opt, sigma.f = sigma.f.opt) 
+                      l=length.opt, 
+                      sigma.f = sigma.f.opt) 
 K.star.star <- getGaussian(x.star, x.star,
-                           l=length.opt, sigma.f = sigma.f.opt) 
-Ky <- getGaussian(x, x,l=length.opt, sigma.f = sigma.f.opt) + 
+                           l=length.opt, 
+                           sigma.f = sigma.f.opt) 
+Ky <- getGaussian(x, x,l=length.opt, 
+                  sigma.f = sigma.f.opt) + 
   diag( nrow=length(x))*noise.opt^2
-postCov <- K.star.star - t(K.star)%*%solve(Ky)%*%K.star
+postCov <- K.star.star - 
+  t(K.star)%*%solve(Ky)%*%K.star
 mu.star <- t(K.star)%*%solve(Ky)%*%y 
 
 # sample some functions from posterior
-sample <- replicate(5, mvrnorm(1, mu.star , postCov))%>%
+sample <- replicate(5, 
+                    mvrnorm(1, 
+                            mu.star, 
+                            postCov))%>%
   as.data.frame()
 values <- cbind(x=x.star,sample)
 values <- melt(values,id="x")
@@ -180,14 +201,20 @@ upperbound <- mu.star -2*sqrt(S2)
 
 # 3.3 Plot Results
 gauss.error <- ggplot() + 
-  geom_ribbon(x = x.star, aes(ymin= lowerbound, 
-                              ymax = upperbound), fill = "grey70") +
+  geom_ribbon(x = x.star, 
+              aes(ymin= lowerbound, 
+                  ymax = upperbound), 
+              fill = "grey70") +
   geom_point( data = NULL,aes( x = x, y=y)) +
-  geom_line(data = values, aes(x=x,y=value, group=variable, color=variable)) +
+  geom_line(data = values, 
+            aes(x = x, y = value, 
+                group=variable, 
+                color=variable)) +
   theme_bw() +
   theme(legend.position="none", 
         panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank())
+        panel.grid.minor = element_blank()) +
+  ylim(-2.5, 2.5)
 gauss.error
-ggsave("gperror_opt.jpg", plot = gauss.error ) # save
-
+ggsave("gperror_opt.jpg", 
+       plot = gauss.error ) # save
