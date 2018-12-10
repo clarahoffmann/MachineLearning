@@ -24,7 +24,7 @@ setwd("/Users/claracharlottehoffmann/Desktop/MachineLearning")
 
 ##################################################
 
-# 0.  Load Packages and Data
+# 0.  Load Packages and Generate Data
 ##################################################
 
 # load packages
