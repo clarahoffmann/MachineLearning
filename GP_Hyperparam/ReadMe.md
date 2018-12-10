@@ -105,7 +105,10 @@ As shown above, the result looks like this:
 <img src="noisyhyper.jpg" width="400"> 
 
 - The article by James Keirstead (2012) is a great starting point for GP regression in R: 
-https://www.r-bloggers.com/gaussian-process-regression-with-r/
+https://www.r-bloggers.com/gaussian-process-regression-with-r/ 
+
+- This blog post by Katherine Bailey provides an overview and a bit more intuition about Gaussian processes: 
+http://katbailey.github.io/post/gaussian-processes-for-dummies/
 
 - Rasmussen \& William's "Gaussian Processes in Machine Learning" (2006) gives a structured and extensive overview of Gaussian Processes
 
