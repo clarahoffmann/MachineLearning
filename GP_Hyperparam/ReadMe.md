@@ -11,3 +11,14 @@ The resulting plot of the Gaussian process conditioned on twenty noisy observati
 <img src="noisyhyper.jpg" width="400"> 
 
 
+# Getting started
+Install the relevant packages.
+
+```r
+# load packages
+if (!require("pacman")) 
+  install.packages("pacman"); library("pacman") 
+p_load("MASS", 
+       "ggplot2", 
+       "reshape2")
+```
