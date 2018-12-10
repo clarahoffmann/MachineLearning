@@ -168,6 +168,9 @@ ggsave("gp_kernels.jpg", plot = figure ) # save
 ```
 
 # Acknowledgements and Starting Tips for Gaussian Processes
+- David Duveneau gives a comprehensive overview of kernels and the kind of prior functions associated with them
+http://www.cs.toronto.edu/~duvenaud/cookbook/index.html
+
 - This lecture by Richard Turner from the University of Cambridge shows different priors, by conditioning only on one data point. It also gives an intuition of how x-values in Gaussian processes can be seen as infinitely many jointly normally distributed variables:
 https://www.youtube.com/watch?v=92-98SYOdlY&t=4886s
 
