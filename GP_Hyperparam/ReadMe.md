@@ -112,5 +112,5 @@ http://katbailey.github.io/post/gaussian-processes-for-dummies/
 
 - Rasmussen \& William's "Gaussian Processes in Machine Learning" (2006) gives a structured and extensive overview of Gaussian Processes
 
-- Kevin P. Murphy provides code to examples from his book "Machine Learning - A Probabilistic Perspective" (2012) on his github page. The noisefree Gaussian process with simulated data can be found here: 
+- Kevin P. Murphy provides Matlab code to examples from his book "Machine Learning - A Probabilistic Perspective" (2012) on his github page. The noisefree Gaussian process with simulated data can be found here: 
 https://github.com/probml/pmtk3/blob/master/demos/gprDemoNoiseFree.m
