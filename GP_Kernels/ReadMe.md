@@ -3,6 +3,7 @@ This code illustrate the effect that different kernels have on the appearance of
 This is because kernels determine the prior over functions. Different kernels lead to different subsets of priors over functions, i.e. they only "allow" for certain shapes of functions. Determining the apppropriate kernel when conducting a Gaussian process is important for fitting an appropriate model. One criterion for cross-validation of different kernels is to optimize for the hyperparameters in the kernels and then compare and choose the model with the highest value of the log-likelihood. 
 
 The code generates the following graph:
+
 <img src="gp_kernels.jpg" width="400">
 
 # Getting Started
@@ -164,4 +165,8 @@ figure <- grid.arrange(gaussian, ornstine,
 figure
 ggsave("gp_kernels.jpg", plot = figure ) # save
 ```
+
+# Acknowledgements and Starting Tips for Gaussian Processes
+- This lecture by Richard Turner from the University of Cambridge shows different priors, by conditioning only on one data point. It also gives an intuition of how x-values in Gaussian processes can be seen as infinitely many jointly normally distributed variables:
+https://www.youtube.com/watch?v=92-98SYOdlY&t=4886s
 
