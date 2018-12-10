@@ -1,5 +1,5 @@
 
-# GP Illustration 
+# Illustrating One-Dimensional Gaussian Processes
 
 This code illustrates a one-dimensional Gaussian process regression with and without a conjugate-gradient optimizer.
 The two code files generate a graphical illustration of the case with noiseless and noisy observations.
