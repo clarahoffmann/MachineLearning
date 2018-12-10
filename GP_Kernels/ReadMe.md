@@ -1,4 +1,7 @@
+# Illustration of Different Kernels in a One-Dimensional Gaussian Process
 
+
+<img src="gp_kernels.jpg" width="400">
 
 # Getting Started
 Install packages:
