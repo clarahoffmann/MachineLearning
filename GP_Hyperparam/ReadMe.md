@@ -8,6 +8,6 @@ The figures are based on Figure 2.5 in "Gaussian Processes in Machine Learning" 
 
 The resulting plot of the Gaussian process conditioned on twenty noisy observations looks like this:
 
-<img src="noisyhyper.jpg" width="250"> 
+<img src="noisyhyper.jpg" width="400"> 
 
 
