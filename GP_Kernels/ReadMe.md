@@ -173,4 +173,5 @@ https://www.youtube.com/watch?v=92-98SYOdlY&t=4886s
 
 - Rasmussen & William's "Gaussian Processes in Machine Learning" (2006) gives a structured and extensive overview of Gaussian Processes and is standard literature for Gaussian Processes
 
-- Kevin P. Murphy provides code to examples from his book "Machine Learning - A Probabilistic Perspective" (2012) on his github page: https://github.com/probml/pmtk3/blob/master/demos
+- Kevin P. Murphy provides Matlab code to examples from his book "Machine Learning - A Probabilistic Perspective" (2012) on his github page: https://github.com/probml/pmtk3/blob/master/demos
+(focus on the codes starting with gpr...
