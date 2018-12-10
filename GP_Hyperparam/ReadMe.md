@@ -101,4 +101,5 @@ figure <- grid.arrange( figurea, figureb,
 ggsave("noisyhyper.jpg", plot = figure ) # save
 ```
 As shown above, the result looks like this:
+
 <img src="noisyhyper.jpg" width="400"> 
