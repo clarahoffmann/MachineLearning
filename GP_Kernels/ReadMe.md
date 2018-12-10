@@ -25,6 +25,7 @@ y = sin(x)
 # x values for prediction 
 x.star <- seq(-5,5,len=100) 
 ```
+
 # Defining the Kernel Functions
 Most kernel functions take the distance between the points of a matrix or a vector as an input. Different kernels in a Gaussian process generate different priors over functions. This is the reason why results of a Gaussian process regression may differ when using different kernels. The set of possible functions changes when different kernels are used.
 To illustrate how Gaussian processes change when different kernels are used, I use five different kernels:
@@ -105,11 +106,11 @@ The function myplot() computes the covaraince and posterior of the Gaussian proc
 
 First, it chooses the kernel entered by the user.
 ```r
-  names <- c("gaussian", "ornstein-uhlenbeck", 
+names <- c("gaussian", "ornstein-uhlenbeck", 
              "periodic","rational quadratic", 
              "locally periodic")
-  var <- which(names %in% mykernel)
-  kernel <- function(var = var, X1, X2){
+var <- which(names %in% mykernel)
+kernel <- function(var = var, X1, X2){
     switch(var, 
            return(gaussKernel(X1, X2)),
            return(ouKernel(X1, X2)),
@@ -121,30 +122,30 @@ First, it chooses the kernel entered by the user.
 
 Then it computes the covarinace elements ...
 ```r
-    K <- kernel(var, X, X)
-    K.star <- kernel(var, X, X.star) 
-    K.star.star <- kernel(var, X.star, X.star) 
+K <- kernel(var, X, X)
+K.star <- kernel(var, X, X.star) 
+K.star.star <- kernel(var, X.star, X.star) 
 ```
 ... mean and variance of the posterior distribution ...
 ```r
-  postCov <- K.star.star - 
+postCov <- K.star.star - 
       t(K.star)%*%solve(K)%*%K.star
-    mu.star <- t(K.star)%*%solve(K)%*%y
+mu.star <- t(K.star)%*%solve(K)%*%y
 ```
 ... samples from the posterior...
 ```r
-    sample <- replicate(5, mvrnorm(1, 
+sample <- replicate(5, mvrnorm(1, 
                                    mu.star ,
                                    postCov))%>%
       as.data.frame()
-    values <- cbind(x = x.star, sample)
-    values <- melt(values,id="x")
+values <- cbind(x = x.star, sample)
+values <- melt(values,id="x")
 ```
 ... confidence bands...
 ```r
-    S2 <- diag(postCov)
-    lowerbound <- mu.star +2*sqrt(S2)
-    upperbound <- mu.star -2*sqrt(S2)
+S2 <- diag(postCov)
+lowerbound <- mu.star +2*sqrt(S2)
+upperbound <- mu.star -2*sqrt(S2)
 ```
 And ultimately plots the Gaussian process with ggplot().
 
