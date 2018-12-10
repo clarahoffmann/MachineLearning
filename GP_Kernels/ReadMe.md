@@ -170,3 +170,6 @@ ggsave("gp_kernels.jpg", plot = figure ) # save
 - This lecture by Richard Turner from the University of Cambridge shows different priors, by conditioning only on one data point. It also gives an intuition of how x-values in Gaussian processes can be seen as infinitely many jointly normally distributed variables:
 https://www.youtube.com/watch?v=92-98SYOdlY&t=4886s
 
+- Rasmussen & William's "Gaussian Processes in Machine Learning" (2006) gives a structured and extensive overview of Gaussian Processes and is standard literature for Gaussian Processes
+
+- Kevin P. Murphy provides code to examples from his book "Machine Learning - A Probabilistic Perspective" (2012) on his github page. The noisefree Gaussian process with simulated data can be found here: https://github.com/probml/pmtk3/blob/master/demos/gprDemoNoiseFree.m
