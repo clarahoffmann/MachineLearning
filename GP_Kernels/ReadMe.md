@@ -1,4 +1,4 @@
-# Illustration of Different Kernels in a One-Dimensional Gaussian Process
+# Different Kernels in a One-Dimensional Gaussian Process
 This code illustrate the effect that different kernels have on the appearance of a one-dimensional Gaussian process. Different kernels lead to distinctly different form of the functions, which are sampled from the posterior distribtion.
 This is because kernels determine the prior over functions. Different kernels lead to different subsets of priors over functions, i.e. they only "allow" for certain shapes of functions. Determining the apppropriate kernel when conducting a Gaussian process is important for fitting an appropriate model. One criterion for cross-validation of different kernels is to optimize for the hyperparameters in the kernels and then compare and choose the model with the highest value of the log-likelihood. 
 
