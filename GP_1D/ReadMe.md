@@ -5,6 +5,16 @@ This code illustrates a one-dimensional Gaussian process regression with and wit
 The two code files generate a graphical illustration of the case with noiseless and noisy observations.
 The figures are based on Figure 2.5 in "Gaussian Processes in Machine Learning" by Rasmussen & Williams (2006) and Figure 15.3 in "Machine Learning - A Probabilistic Perspective" by Kevin P. Murphy (2012) in R.
 
+# Output
+The results for the noiseless case look like this:
+
+<img src="gpnoerror.jpg" width="250"> <img src="gpnoerror_opt.jpg" width="250">
+
+In the noisy case, the Gaussian process does not have to interpolate the observed data points.
+The results look like this:
+
+<img src="gperror.jpg" width="250"><img src="gperror_opt.jpg" width="250">
+
 # Getting started
 Install the relevant packages.
 
@@ -110,7 +120,7 @@ The results look like this:
 - The article by James Keirstead (2012) is a great starting point for GP regression in R: 
 https://www.r-bloggers.com/gaussian-process-regression-with-r/
 
-- Rasmussen \& William's "Gaussian Processes in Machine Learning" (2006) give a structured and extensive overview of Gaussian Processes
+- Rasmussen \& William's "Gaussian Processes in Machine Learning" (2006) gives a structured and extensive overview of Gaussian Processes
 
 - Kevin P. Murphy provides code to examples from his book "Machine Learning - A Probabilistic Perspective" (2012) on his github page. The noisefree Gaussian process with simulated data can be found here: 
 https://github.com/probml/pmtk3/blob/master/demos/gprDemoNoiseFree.m
