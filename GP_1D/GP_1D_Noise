@@ -2,7 +2,7 @@
 
 #  Gaussian Process with Simulated data and a
 #  Conjugate Gradient Optimization on the Kernel
-#  Parameters
+#  Parameters (Noisy Case)
 #  - based on Rasmussen & Williams (2006)
 #    and Kevin P. Murphy (2012)
 #################################################
@@ -114,7 +114,7 @@ gauss.error <- ggplot() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) +
   theme(legend.position="none") +
-  ylim(-2.5, 2.5)
+  ylim(-2.75, 2.75)
 gauss.error
 ggsave("gperror.jpg", plot = gauss.error ) # save
 
@@ -216,7 +216,7 @@ gauss.error <- ggplot() +
   theme(legend.position="none", 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) +
-  ylim(-2.5, 2.5)
+  ylim(-2.75, 2.75)
 gauss.error
 ggsave("gperror_opt.jpg", 
        plot = gauss.error ) # save
