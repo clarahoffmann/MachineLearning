@@ -3,7 +3,6 @@
 #  Gaussian Process on Boston Housing Prices with
 #  Conjugate Gradient Optimization on the Kernel
 #  Parameters
-#  - Based on Rasmussen & Williams (2006)
 #################################################
 
 # Structure:
@@ -55,8 +54,10 @@ x.star <- seq(-5,5,len=100)
 #
 # Returns:
 #   Gaussian kernel matrix
-getGaussian <- function(X1, X2 ,l=1, sigma.f = 1 ) {
-  Zero <- matrix( rep( 0, len=length(X1)*length(X2)), 
+getGaussian <- function(X1, X2 ,
+                        l=1, sigma.f = 1 ) {
+  Zero <- matrix( rep( 0, 
+                       len=length(X1)*length(X2)), 
                   nrow = length(X1))
   A <- Zero + X1
   B <- t(t(Zero)+X2)
@@ -75,11 +76,14 @@ K <- getGaussian(x, x)
 K.star <- getGaussian(x, x.star) 
 K.star.star <- getGaussian(x.star, x.star)
 # posterior covariance and mean
-postCov <- K.star.star - t(K.star)%*%solve(K)%*%K.star
+postCov <- K.star.star - 
+  t(K.star)%*%solve(K)%*%K.star
 mu.star <- t(K.star)%*%solve(K)%*%y
 
 # sample some functions from posterior
-sample <- replicate(5, mvrnorm(1, mu.star , postCov))%>%
+sample <- replicate(5, mvrnorm(1, 
+                            mu.star ,
+                            postCov))%>%
   as.data.frame()
 values <- cbind(x=x.star,sample)
 values <- melt(values,id="x")
@@ -91,17 +95,21 @@ upperbound <- mu.star -2*sqrt(S2)
 
 # 2.2 Plot Results
 gauss.no.error <- ggplot() + 
-  geom_ribbon(x = x.star, aes(ymin= lowerbound, 
-                              ymax = upperbound), fill = "grey70") +
+  geom_ribbon(x = x.star, 
+              aes(ymin= lowerbound, 
+                  ymax = upperbound), 
+              fill = "grey70") +
   geom_point( data = NULL,aes( x = x, y=y)) +
   geom_line(data = values, aes(x=x,y=value, 
             group=variable, colour = variable)) +
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) +
-  theme(legend.position="none")
+  theme(legend.position="none") +
+  ylim(-2.5, 2.5)
 gauss.no.error
-ggsave("gpnoerror.jpg", plot = gauss.no.error ) # save
+ggsave("gpnoerror.jpg", 
+       plot = gauss.no.error ) # save
 
 ##################################################
 
@@ -135,14 +143,18 @@ likelihood <- function(hyper, X = x, Y = y){
   length <- (exp(hyper[1]))^0.5 
   sigma.f <-(exp(hyper[2]))^0.5
   N <- length(X)
-  K <- getGaussian(X,X, l = length, sigma.f=sigma.f)
+  K <- getGaussian(X,X, 
+                   l = length, sigma.f=sigma.f)
   Ki <- chol2inv(chol(K))
-  loglik <- 0.5*t(Y)%*%Ki%*%Y+ 0.5*log(det(K)) + N*0.5*log(2*pi)
+  loglik <- 0.5*t(Y)%*%Ki%*%Y + 
+    0.5*log(det(K)) + 
+    N*0.5*log(2*pi)
   return(loglik)
 }
 
 # 3.2 Optimizing with Conjugate-Gradient
-# optimize gradient parameters with optimize function
+# optimize gradient parameters 
+# with optimize function
 hyper.opt <- optim( par =  c(-2.3,-2.3), 
                     fn =  likelihood, 
                     method = c("CG")) 
@@ -160,11 +172,15 @@ K.star.star <- getGaussian(x.star, x.star,
                            l=length.opt, 
                            sigma.f = sigma.f.opt) 
 # posterior covariance and mean
-postCov <- K.star.star - t(K.star)%*%solve(K)%*%K.star
+postCov <- K.star.star - 
+  t(K.star)%*%solve(K)%*%K.star
 mu.star <- t(K.star)%*%solve(K)%*%y
 
 # sample some functions from posterior
-sample <- replicate(5, mvrnorm(1, mu.star , postCov))%>%
+sample <- replicate(5,
+                    mvrnorm(1, 
+                            mu.star, 
+                            postCov))%>%
   as.data.frame()
 values <- cbind(x=x.star,sample)
 values <- melt(values,id="x")
@@ -177,14 +193,21 @@ upperbound <- mu.star -2*sqrt(S2)
 # 3.4 Plot Results
 # plot results
 gauss.no.error.opt <- ggplot() + 
-  geom_ribbon(x = x.star, aes(ymin= lowerbound, 
-                              ymax = upperbound), fill = "grey70") +
+  geom_ribbon(x = x.star, 
+              aes(ymin= lowerbound, 
+                  ymax = upperbound), 
+              fill = "grey70") +
   geom_point( data = NULL,aes( x = x, y=y)) +
-  geom_line(data = values, aes(x=x,y=value, 
-                               group=variable, colour = variable)) +
+  geom_line(data = values, 
+            aes(x = x, y = value, 
+                group=variable, 
+                colour = variable)) +
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) +
-  theme(legend.position="none")
+  theme(legend.position="none") +
+  ylim(-2.5, 2.5)
+
 gauss.no.error.opt
-ggsave("gpnoerror_opt.jpg", plot = gauss.no.error.opt ) # save
+ggsave("gpnoerror_opt.jpg", 
+       plot = gauss.no.error.opt ) # save
