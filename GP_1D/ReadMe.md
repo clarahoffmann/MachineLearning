@@ -102,6 +102,35 @@ noise.opt <- exp(hyper.opt$par[1])^0.5
 length.opt <- exp(hyper.opt$par[2])^0.5 
 sigma.f.opt <- exp(hyper.opt$par[3])^0.5
 ```
+For plotting the data, first compute the 95% percent confidence interval.
+The melt function simplifies calling the data in the ggplot() function.
+```r
+# sample some functions from posterior
+sample <- replicate(5, mvrnorm(1, mu.star , postCov))%>%
+  as.data.frame()
+values <- cbind(x=x.star,sample)
+values <- melt(values,id="x")
+
+# confidence bands
+S2 <- diag(postCov)
+lowerbound <- mu.star +2*sqrt(S2)
+upperbound <- mu.star -2*sqrt(S2)
+```
+
+Then plot the results with ggplot.
+```r
+gauss.error <- ggplot() + 
+  geom_ribbon(x = x.star, aes(ymin= lowerbound, 
+                              ymax = upperbound), fill = "grey70") +
+  geom_point( data = NULL,aes( x = x, y=y)) +
+  geom_line(data = values, aes(x=x,y=value, group=variable, color=variable)) +
+  theme_bw() +
+  theme(legend.position="none", 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank())
+gauss.error
+ggsave("gperror_opt.jpg", plot = gauss.error ) # save
+```
 
 # Results
 The resulting plots clearly shows how the optimization process reduces the width of the confidence bands. This is intuitive as the optimization converges when the parametrization with the highest log-likelihood near the starting point is found.
