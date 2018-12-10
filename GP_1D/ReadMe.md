@@ -1,10 +1,9 @@
 
-# GP Illustration based on Figure 2.5 Rasmussen & Williams (2006), 
-# and Figure 15.3 in KPM (2012) in R
+# GP Illustration 
 
 This code illustrates a one-dimensional Gaussian process regression with and without a conjugate-gradient optimizer.
 The two code files generate a graphical illustration of the case with noiseless and noisy observations.
-
+The figures are based on Figure 2.5 in "Gaussian Processes in Machine Learning" by Rasmussen & Williams (2006) and Figure 15.3 in "Machine Learning - A Probabilistic Perspective" by Kevin P. Murphy (2012) in R.
 
 # Getting started
 Install the relevant packages.
