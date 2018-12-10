@@ -108,7 +108,7 @@ gauss.no.error <- ggplot() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) +
   theme(legend.position="none") +
-  ylim(-2.5, 2.5)
+  ylim(-2.75, 2.75)
 gauss.no.error
 ggsave("gpnoerror.jpg", 
        plot = gauss.no.error ) # save
@@ -208,7 +208,7 @@ gauss.no.error.opt <- ggplot() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) +
   theme(legend.position="none") +
-  ylim(-2.5, 2.5)
+  ylim(-2.75, 2.75)
 
 gauss.no.error.opt
 ggsave("gpnoerror_opt.jpg", 
