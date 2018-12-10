@@ -14,7 +14,7 @@ p_load("MASS",
        "gridExtra")
 ```
 
-And generate the data:
+And generate the data, which are five noisy observations from a sine function:
 ```r
 # observed values
 x <- c(-4,-3, -2, -1 , 1)
