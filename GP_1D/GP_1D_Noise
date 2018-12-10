@@ -1,8 +1,10 @@
 #################################################
 
-#  Gaussian Process on Boston Housing Prices with
+#  Gaussian Process with Simulated data and a
 #  Conjugate Gradient Optimization on the Kernel
 #  Parameters
+#  - based on Rasmussen & Williams (2006)
+#    and Kevin P. Murphy (2012)
 #################################################
 
 # Structure:
