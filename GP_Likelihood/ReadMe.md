@@ -4,5 +4,8 @@ This code replicates Figure 5.3 in "Gaussian Processes in Machine Learning" by R
 
 # Output
 
-The code produces the following plot
-<img src="noisyhyper.jpg" width="400"> 
+The code produces a plot for the different elements of the log-likelihood over varying length scales ...
+<img src="Rasmussen53a.jpg" width="400"> 
+
+... and the log-likelihood over the length scales with different sample sizes ...
+<img src="Rasmussen53b.jpg" width="400"> 
