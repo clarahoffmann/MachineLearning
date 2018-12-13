@@ -80,6 +80,7 @@ colnames(samp.size)<- c("samp", "n = 8",
                      "n = 21", "n = 55")
 samp.size <- melt(samp.size,id="samp")
 ```
+
 Finally, plot the results:
 <img src="Rasmussen53a.jpg" width="300"><img src="Rasmussen53b.jpg" width="300"> 
 
