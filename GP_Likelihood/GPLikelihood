@@ -10,9 +10,8 @@
 # Structure:
 # 0. Load Packages 
 # 1. Data & Functions
-# 2. Kernel Parameter Optimization
-# 3. Figure 5.3a
-# 4. Figure 5.3b
+# 2. Figure 5.3a
+# 3. Figure 5.3b
 
 # set working directory
 setwd("/Users/claracharlottehoffmann/Desktop/MachineLearning")
@@ -95,6 +94,11 @@ likelihood <- function(length, noise=0.1){
   return(rbind(length, prob, datafit, complex))
 }
 
+##################################################
+
+# 2. Figure 5.3a
+##################################################
+
 # compute likelihood elements for different 
 # lengthscales
 sy <- seq(0.5,10, 0.05)
@@ -141,9 +145,12 @@ Fig53a <- ggplot() +
 Fig53a
 ggsave("Rasmussen53a.jpg", plot = Fig53a ) # save
 
+##################################################
 
-# for different sample sizes figure 5.3.b Rasmussen & Williams 2006
+#  3. Figure 5.3b
+##################################################
 
+# generate data
 noise <- (0.1)^2
 x.small <- sample(-400:400, 8, replace=F)/100
 y.small <- sin(x.small) + mvrnorm(1, 0 , noise) 
@@ -158,6 +165,21 @@ sy <- seq(0.05,10, 0.05)
 
 # calculate distance between all elements
 prob <- function(length, noise=0.1){
+  # Computes marg. log-likelihood for a joint 
+  # normal distribution of a Gaussian Process
+  # and its nonconstant elements
+  # Note: requires function getGaussian() 
+  #
+  # Args:
+  #   length: length parameter for Gaussian
+  #            kernel
+  #   noise: noise parameter for Gaussian
+  #          kernel - default = 0.1
+  #
+  # Returns:
+  #  log-likelihood as scalar
+  #  
+  #
   Ky <- getGaussian(x, l=length) + 
     diag(nrow=length(x))*(noise^2)
   Kyi <- chol2inv(chol(Ky))
