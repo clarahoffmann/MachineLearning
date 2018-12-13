@@ -26,7 +26,8 @@ if (!require("pacman"))
   install.packages("pacman"); library("pacman") 
 p_load("MASS", 
        "ggplot2", 
-       "scales")
+       "scales",
+       "reshape2")
 
 ##################################################
 
@@ -104,23 +105,16 @@ likelihood <- function(length, noise=0.1){
 sy <- seq(0.5,10, 0.05)
 mydata <- as.data.frame(t(sapply(sy, likelihood)))
 colnames(mydata)<- c("length", "prob", 
-                     "datafit", "complex")
-Fig53a <- ggplot() + 
-  geom_line(data = NULL,  
-            aes(x = mydata$length,
-                y = mydata$prob,
-                colour = "darkblue"),
-            linetype = "solid") + 
-  geom_line(data = NULL, 
-            aes(x = mydata$length,
-                y = mydata$datafit,
-                colour = "red"), 
-            linetype = "dashed" ) + 
-  geom_line(data = NULL, 
-            aes(x = mydata$length,
-                y = mydata$complex,
-                colour = "green"), 
-            linetype = "dotted" ) +
+                     "datafit", "minus complexity")
+mydata <- melt(mydata,id="length")
+
+
+Fig53a <- ggplot(data = mydata, 
+                 aes(x=length, 
+                     y = value, 
+                     linetype = variable,
+                     color = variable)) + 
+  geom_line() +
   scale_x_log10(breaks = trans_breaks(
     "log10", function(x) 10^x),
     labels = trans_format("log10", 
@@ -128,16 +122,6 @@ Fig53a <- ggplot() +
   annotation_logticks(sides="b") + 
   scale_y_continuous(name = "log probability", 
                      limits = c(-100,70)) +
-  scale_color_manual(name = "",
-                     labels = c("minus complexity penalty",
-                              "data fit", 
-                          "marginal likelihood"), 
-                     values = c("green", "red", "darkblue")) +
-  scale_linetype_manual(name = "",
-                     labels = c("minus complexity penalty",
-                                "data fit", 
-                                "marginal likelihood"), 
-                     values = c("solid", "dashed", "dotted")) +
   theme_bw() +
   theme(legend.position = c(0.3, 0.3),
         panel.grid.major = element_blank(), 
@@ -145,7 +129,8 @@ Fig53a <- ggplot() +
 Fig53a
 ggsave("Rasmussen53a.jpg", plot = Fig53a ) # save
 
-##################################################
+
+  ##################################################
 
 #  3. Figure 5.3b
 ##################################################
@@ -203,22 +188,15 @@ mydata.large <- as.data.frame(t(sapply(sy, prob)))
 samp.size <- as.data.frame(t(rbind(
   x = sy, s =mydata.small, 
   m=mydata.med, l=mydata.large)))
+colnames(samp.size)<- c("samp", "n = 8", 
+                     "n = 21", "n = 55")
+samp.size <- melt(samp.size,id="samp")
 
-Fig53b <- ggplot() + 
-  geom_line(data = NULL, 
-            aes(x = samp.size$x,
-                y = samp.size$s,
-                colour = "darkblue"), 
-            linetype="dotted" ) + 
-  geom_line(data = NULL, 
-            aes(x = samp.size$x,
-                y = samp.size$m,
-                colour = "red"), 
-            linetype = "dashed" ) + 
-  geom_line(data = NULL, 
-            aes(x = samp.size$x,
-                y = samp.size$l,
-                colour = "green") ) +
+Fig53b <- ggplot(data = samp.size , 
+                 aes(x = samp, y = value, 
+                     linetype = variable,
+                     color = variable)) + 
+  geom_line() +
   scale_x_log10(name = "characteristic 
                 lengthscale", 
                 breaks = trans_breaks(
@@ -228,10 +206,6 @@ Fig53b <- ggplot() +
   annotation_logticks(sides="b") + 
   scale_y_continuous(name = "log probability", 
                      limits = c(-100,70)) +
-  scale_color_discrete(name = "sample size",
-                       labels = c("n = 8", 
-                                  "n = 21", 
-                                  "n = 55")) +
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) +
