@@ -1,11 +1,10 @@
 #################################################
 
-#  Influence of the Kernel Parameters in a 
-#  Gaussian Process on the Marginal Log-
-#  likelihood and its Respective Elements:
+#  Influence of the kernel parameters in a 
+#  Gaussian Process on the marginal log-
+#  likelihood and its respective elements:
 #  Replicates Figure 5.3a and Figure 5.3b in
-#  Rasmussen & Williams - Gaussian Processes in
-#  Machine Learning (2006)
+#  Rasmussen & Williams (2006)
 #################################################
 
 # Structure:
@@ -96,6 +95,8 @@ likelihood <- function(length, noise=0.1){
   return(rbind(length, prob, datafit, complex))
 }
 
+# compute likelihood elements for different 
+# lengthscales
 sy <- seq(0.5,10, 0.05)
 mydata <- as.data.frame(t(sapply(sy, likelihood)))
 colnames(mydata)<- c("length", "prob", 
@@ -104,7 +105,8 @@ Fig53a <- ggplot() +
   geom_line(data = NULL,  
             aes(x = mydata$length,
                 y = mydata$prob,
-                colour = "darkblue")) + 
+                colour = "darkblue"),
+            linetype = "solid") + 
   geom_line(data = NULL, 
             aes(x = mydata$length,
                 y = mydata$datafit,
@@ -115,7 +117,6 @@ Fig53a <- ggplot() +
                 y = mydata$complex,
                 colour = "green"), 
             linetype = "dotted" ) +
-  
   scale_x_log10(breaks = trans_breaks(
     "log10", function(x) 10^x),
     labels = trans_format("log10", 
@@ -123,20 +124,22 @@ Fig53a <- ggplot() +
   annotation_logticks(sides="b") + 
   scale_y_continuous(name = "log probability", 
                      limits = c(-100,70)) +
-  scale_color_discrete(name = "sample size",
-                       labels = 
-                         c("minus 
-                           complexity penalty",
-                           "n = data fit", 
-                           "n = marginal 
-                           likelihood")
-                         ) +
+  scale_color_manual(name = "",
+                     labels = c("minus complexity penalty",
+                              "data fit", 
+                          "marginal likelihood"), 
+                     values = c("green", "red", "darkblue")) +
+  scale_linetype_manual(name = "",
+                     labels = c("minus complexity penalty",
+                                "data fit", 
+                                "marginal likelihood"), 
+                     values = c("solid", "dashed", "dotted")) +
   theme_bw() +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank()) +
-  theme(legend.position = c(0.3, 0.3))
+  theme(legend.position = c(0.3, 0.3),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) 
 Fig53a
-ggsave("Rasmussen53a.pdf", plot = Fig53a ) # save
+ggsave("Rasmussen53a.jpg", plot = Fig53a ) # save
 
 
 # for different sample sizes figure 5.3.b Rasmussen & Williams 2006
@@ -153,13 +156,6 @@ y.large <- sin(x.large) + mvrnorm(1, 0 , noise)
 # the log probability
 sy <- seq(0.05,10, 0.05)
 
-# Computes gaussian kernel for matrices/vectors
-# FILL UP LATER :::::
-#::::::::::::::::..............
-# ::::::::::::::::::::::::::
-
-# ALSO THIS SHOULD BE DONE NICER WITH INPUT ELEMENTS X AND Y
-# BUT THEN SOME PROBLEMS WITH THE SAPPLY FUNCTION OCCUR...
 # calculate distance between all elements
 prob <- function(length, noise=0.1){
   Ky <- getGaussian(x, l=length) + 
@@ -168,9 +164,6 @@ prob <- function(length, noise=0.1){
   prob <- -0.5*y%*%Kyi%*%y - 
     0.5*log(det(Ky)) - 
     0.5*length(x)*log(2*pi)
-  datafit <- -0.5*y%*%Kyi%*%y
-  complex <- - 0.5*log(det(Ky))
-  const <- - 0.5*length(x)*log(2*pi)
   return(prob)
 }
 
@@ -222,4 +215,4 @@ Fig53b <- ggplot() +
         panel.grid.minor = element_blank()) +
   theme(legend.position = c(0.3, 0.3))
 Fig53b
-ggsave("Rasmussen53b.pdf", plot = Fig53b ) # save
+ggsave("Rasmussen53b.jpg", plot = Fig53b ) # save
