@@ -21,7 +21,7 @@ if (!require("pacman"))
 p_load("MASS", 
        "ggplot2", 
        "gridExtra")
-setwd("/Users/claracharlottehoffmann/Desktop/MachineLearning")
+setwd("...")
 
 # observed values
 x <- sample(-400:400, 20, replace=F)/100
