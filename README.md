@@ -5,7 +5,6 @@ See individual folders for code descriptions and useful sources.
 
 Author: Clara Hoffmann
 
-# Contents
 # GP_1D
 
 One-dimensional Gaussian process with noiseless and noisy samples of a sine function and conjugate gradient optimization
@@ -30,6 +29,6 @@ One-dimensional Gaussian process with different kernels.
 
 Development of the log-likelihood of a one-dimensional Gaussian process with varying length scales and hyperparameters (replicates Figure 5.3 from Rasmussen \& Williams "Gaussian Processes for Machine Learning")
 
-<img src="GP_Likelihood/Rasmussen53a.jpg" width="400"> 
+<img src="GP_Likelihood/Rasmussen53a.jpg" width="300"> 
 
-<img src="GP_Likelihood/Rasmussen53b.jpg" width="400">
+<img src="GP_Likelihood/Rasmussen53b.jpg" width="300">
