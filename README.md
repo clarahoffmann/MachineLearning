@@ -5,6 +5,7 @@ Content of a Seminar Paper in the course "Machine Learning - A Probabilistic App
 Author: Clara Hoffmann
 
 # Contents
+# GP_1D
 
 One-dimensional Gaussian process with noiseless and noisy samples of a sine function and conjugate gradient optimization
 
