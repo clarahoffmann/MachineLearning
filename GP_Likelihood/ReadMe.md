@@ -24,8 +24,6 @@ p_load("MASS",
 # Generate Data
 Generate Data point sampled from a noisy sine function
 ```r
-# generate sample data from a sine function
-# with normally distributed noise
 x <- sample(-400:400, 7, replace=F)/100
 noise <- (0.1)^2
 y = sin(x) + mvrnorm(1, 0 , noise) 
