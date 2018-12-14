@@ -125,12 +125,13 @@ Fig53a <- ggplot(data = mydata,
   theme_bw() +
   theme(legend.position = c(0.3, 0.3),
         panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank()) 
+        panel.grid.minor = element_blank()) +
+  theme(legend.title=element_blank())
 Fig53a
 ggsave("Rasmussen53a.jpg", plot = Fig53a ) # save
 
 
-  ##################################################
+##################################################
 
 #  3. Figure 5.3b
 ##################################################
@@ -189,7 +190,7 @@ samp.size <- as.data.frame(t(rbind(
   x = sy, s =mydata.small, 
   m=mydata.med, l=mydata.large)))
 colnames(samp.size)<- c("samp", "n = 8", 
-                     "n = 21", "n = 55")
+                        "n = 21", "n = 55")
 samp.size <- melt(samp.size,id="samp")
 
 Fig53b <- ggplot(data = samp.size , 
@@ -197,8 +198,7 @@ Fig53b <- ggplot(data = samp.size ,
                      linetype = variable,
                      color = variable)) + 
   geom_line() +
-  scale_x_log10(name = "characteristic 
-                lengthscale", 
+  scale_x_log10(name = "length", 
                 breaks = trans_breaks(
                   "log10", function(x) 10^x),
                 labels = trans_format(
@@ -209,6 +209,7 @@ Fig53b <- ggplot(data = samp.size ,
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank()) +
-  theme(legend.position = c(0.3, 0.3))
+  theme(legend.position = c(0.3, 0.3)) +
+  theme(legend.title=element_blank())
 Fig53b
 ggsave("Rasmussen53b.jpg", plot = Fig53b ) # save
