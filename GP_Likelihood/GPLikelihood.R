@@ -14,7 +14,7 @@
 # 3. Figure 5.3b
 
 # set working directory
-setwd("/Users/claracharlottehoffmann/Desktop/MachineLearning")
+setwd("...")
 
 ##################################################
 
