@@ -20,7 +20,7 @@
 #   3.4 Plot Results
 
 # set working directory
-setwd("/Users/claracharlottehoffmann/Desktop/MachineLearning")
+setwd("...")
 
 ##################################################
 
