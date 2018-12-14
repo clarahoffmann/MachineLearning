@@ -15,7 +15,7 @@
 # 0.  Load Packages and Generate Data
 ##################################################
 
-setwd("/Users/claracharlottehoffmann/Desktop/MachineLearning")
+setwd("...")
 
 if (!require("pacman")) 
   install.packages("pacman"); library("pacman") 
