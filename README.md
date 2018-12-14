@@ -17,4 +17,4 @@ One-dimensional Gaussian process with noiseless and noisy samples of a sine func
 
 One-dimensional Gaussian process with squared exponential kernel and varying hyperparameters.
 
-<img src="noisyhyper.jpg" width="400"> 
+<img src="GP_Hyperparam/noisyhyper.jpg" width="400"> 
