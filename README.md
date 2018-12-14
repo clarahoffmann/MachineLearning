@@ -7,7 +7,7 @@ Author: Clara Hoffmann
 
 # GP_1D
 
-One-dimensional Gaussian process with noiseless and noisy samples of a sine function and conjugate gradient optimization
+One-dimensional Gaussian process with noiseless and noisy samples of a sine function and conjugate gradient optimization. partly based on Figure 2.5 in "Gaussian Processes for Machine Learning" by Rasmussen & Williams (2006) and Figure 15.3 in "Machine Learning - A Probabilistic Perspective" by Kevin P. Murphy (2012)
 
 <img src="GP_1D/gpnoerror.jpg" width="250"> <img src="GP_1D/gpnoerror_opt.jpg" width="250"> 
 
