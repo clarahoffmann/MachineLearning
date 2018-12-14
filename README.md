@@ -23,4 +23,4 @@ One-dimensional Gaussian process with squared exponential kernel and varying hyp
 
 One-dimensional Gaussian process with different kernels.
 
-<img src="gp_kernels.jpg" width="400">
+<img src="GP_Kernels/gp_kernels.jpg" width="400">
