@@ -1,6 +1,7 @@
 # MachineLearning
-Some Illustration of Gaussian Processes with simulated data.
-Content of a Seminar Paper in the course "Machine Learning - A Probabilistic Approach" at Humboldt University
+Some Illustration of Gaussian Processes with simulated data
+- Content of a Seminar Paper in the course "Machine Learning - A Probabilistic Approach" at Humboldt University
+
 See individual folders for code descriptions and useful sources.
 
 Author: Clara Hoffmann
