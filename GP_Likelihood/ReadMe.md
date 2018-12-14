@@ -80,6 +80,7 @@ samp.size <- melt(samp.size,id="samp")
 ```
 
 Finally, plot the results:
+
 <img src="Rasmussen53a.jpg" width="300"><img src="Rasmussen53b.jpg" width="300"> 
 
 
