@@ -1,4 +1,4 @@
-# MachineLearning
+# Gaussian Processes
 Some Illustration of Gaussian Processes with simulated data. The project is part of a seminar paper in the course "Machine Learning - A Probabilistic Approach" at Humboldt University
 
 See individual folders for code descriptions and useful sources.
